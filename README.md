@@ -72,6 +72,3 @@ No Response to Commands: Ensure your microphone is working and configured correc
 Incorrect Recognition: If speech recognition accuracy is low, try speaking more clearly or adjusting recog.pause_threshold in the command() function.
 Missing Wikipedia Summaries: Make sure you have an internet connection for fetching data from Wikipedia.
 
-**License**
-
-This project is open-source and available under the MIT License.
