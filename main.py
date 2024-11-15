@@ -8,7 +8,7 @@ import pyttsx3
 import speech_recognition as sr
 import wikipedia
 from googlesearch import search
-
+import nltk
 
 name = input('Your name: ')
 engine = pyttsx3.init()
@@ -39,14 +39,16 @@ def date():
     speak(f"It is Currently,{day}, {month}, {year},in DDMMYYYY format")
 
 
-def greet():
+def greet(_name):
     hour = datetime.datetime.now().hour
-    if 12 >= hour >= 6:
-        speak(f"Good Morning,{name},Welcome to PulseAI, How may i help you?")
-    elif 16 >= hour >= 12:
-        speak(f"Good Afternoon,{name},Welcome to PulseAI, How may i help you?")
-    elif 24 >= hour >= 16:
-        speak(f"Good Evening,{name},Welcome to PulseAI, How may i help you?")
+    if 6 <= hour < 12:
+        speak(f"Good Morning, {_name}. Welcome to PulseAI! How may I help you?")
+    elif 12 <= hour < 16:
+        speak(f"Good Afternoon, {_name}. Welcome to PulseAI! How may I help you?")
+    elif 16 <= hour <= 24:
+        speak(f"Good Evening, {_name}. Welcome to PulseAI! How may I help you?")
+    else:
+        speak(f"Hello, {_name}. It's quite late! How can I assist you?")
 
 
 def screenshot():
@@ -64,38 +66,39 @@ def command():
         audio = recog.listen(source)
     try:
         print("Recognizing...")
-        query = recog.recognize_google(audio)
-        print(query)
+        _query = recog.recognize_google(audio)
+        print(_query)
     except sr.UnknownValueError:
         speak("Sorry i didn't understand that")
         print("Sorry i didn't understand that")
-        return 'Try Again'
-    except sr.RequestError as e:
-        speak("Could not request results; {0}".format(e))
-        print("Could not request results; {0}".format(e))
-    except Exception as e:
-        speak(e)
-        print(e)
-        return "Try Again"
+        return "0"
+    except sr.RequestError as error1:
+        speak("Could not request results; {0}".format(error1))
+        print("Could not request results; {0}".format(error1))
+        return "2"
+    except Exception as error2:
+        speak(error2)
+        print(error2)
+        return "2"
 
-    return query
+    return _query
 
 
-def song_google(query):
-    nquery = query.split()
-    nquery.pop(0)
-    keywords = " ".join(nquery)
+def song_google(_query):
+    n_query = _query.split()
+    n_query.pop(0)
+    keywords = " ".join(n_query)
     urls = [url for url in search(keywords, num_results=1)]
     return urls[0]
 
 
 if __name__ == '__main__':
-    greet()
+    greet(name)
     while True:
         browser_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
         wb.register('brave', None, wb.BackgroundBrowser(browser_path))
         query = command().lower()
-
+        handled = False
         # Browsing-------------------------------------------------------------------------------------------------------
         websites = {
             "open google": "https://www.google.com",
@@ -137,7 +140,10 @@ if __name__ == '__main__':
         for i in websites:
             if i in query:
                 wb.open(websites[i])
+                handled = True
                 break
+        else:
+            pass
         # Conversational Responses---------------------------------------------------------------------------------------
         conversational_responses = {
             "hello": "Hello! How can I assist you today?",
@@ -173,16 +179,21 @@ if __name__ == '__main__':
             if i in query:
                 print(conversational_responses[i])
                 speak(conversational_responses[i])
+                handled = True
                 break
+        else:
+            pass
         # Song queries(Beta)-----------------------------------<<-x-UNDER CONSTRUCTION-x->>-----------------------------
         if 'play' in query:
             wb.open(song_google(query))
-
+            handled = True
         # Other Queries-------------------------------------------------------------------------------------------------
         elif 'time' in query:
             time()
+            handled = True
         elif 'date' in query:
             date()
+            handled = True
         elif 'what is' in query:
             try:
                 a = "give me a moment to gather my thoughts."
@@ -192,57 +203,68 @@ if __name__ == '__main__':
                     speak(a)
                 else:
                     speak(b)
-                nquery = query.split()
-                nquery.pop(0)
-                nquery.pop(0)
-                new_query = " ".join(nquery).lower()
-                results = wikipedia.search(new_query, 5)
+                query = query.split()
+                query.pop(0)
+                query.pop(0)
+                query = " ".join(query).lower()
+                results = wikipedia.search(query, 5)
                 for i, j in zip(results, [i for i in range(1, 6)]):
                     print(j, i)
                     speak(i)
+                else:
+                    pass
                 q_choice = int(input('your choice:')) - 1
                 for i in results:
                     if results.index(i) == q_choice:
                         speak(i)
                         query = i
+                        break
+                else:
+                    pass
                 final_result = wikipedia.summary(query, sentences=10)
                 print(final_result)
                 speak(final_result)
-
+                handled = True
             except Exception as e:
                 print(e)
                 speak(f"Sorry I can't answer that currently because of {e}")
 
         elif 'screenshot' in query:
             screenshot()
+            handled = True
 
         elif 'open browser' in query:
             browser_path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
             os.startfile(browser_path)
+            handled = True
 
         elif 'remember that' in query:
             speak("what should i remember?")
             print("what should i remember?")
-            rem_dat = command()
+            rem_dat = str(command())
             rem_file = open('data.txt', 'a')
             rem_file.write(rem_dat + "\n")
             rem_file.close()
             print(f"i will now remember, {rem_dat}")
             speak(f"i will now remember, {rem_dat}")
+            handled = True
 
         elif "do you remember" in query:
             rem_file = open('data.txt', 'r')
             rem_dat = rem_file.readlines()
+            print("Yes, I'll read out what i remember.")
             speak("Yes, I'll read out what i remember.")
             for i in rem_dat:
                 print(i)
                 speak(i)
             rem_file.close()
+            handled = True
 
         elif 'power off' in query:
+            handled = True
             quit()
 
-        else:
+        if handled is False:
             print('Do you want to search this on google')
             speak('Do you want to search this on google')
 
@@ -251,7 +273,8 @@ if __name__ == '__main__':
                 encoded_query = quote_plus(query)
                 encoded_query = "https://search.brave.com/search?q="+encoded_query
                 wb.open(encoded_query)
+
             else:
-                speak("Alright!")
                 print("Alright!")
-                pass
+                speak("Alright!")
+
