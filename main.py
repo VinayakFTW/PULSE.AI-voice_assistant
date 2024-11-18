@@ -8,18 +8,19 @@ import pyttsx3
 import speech_recognition as sr
 import wikipedia
 from googlesearch import search
-import nltk
 
+
+handled = False
 name = input('Your name: ')
 engine = pyttsx3.init()
 # Change how the Engine Sounds------------------------------------------------------------------------------------------
-'''voices = engine.getProperty('voices')
+voices = engine.getProperty('voices')
 if len(voices) > 1:
     engine.setProperty('voice', voices[1].id)
 else:
     engine.setProperty('voice', voices[0].id)
 engine.setProperty('rate', 145)
-'''
+
 # Functions Complimenting Engine Functioning----------------------------------------------------------------------------
 def speak(audio=None):
     engine.say(audio)
@@ -59,6 +60,7 @@ def screenshot():
 
 
 def command():
+    global handled
     recog = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
@@ -71,11 +73,12 @@ def command():
     except sr.UnknownValueError:
         speak("Sorry i didn't understand that")
         print("Sorry i didn't understand that")
+        handled = True
         return "0"
     except sr.RequestError as error1:
         speak("Could not request results; {0}".format(error1))
         print("Could not request results; {0}".format(error1))
-        return "2"
+        return "1"
     except Exception as error2:
         speak(error2)
         print(error2)
@@ -89,8 +92,12 @@ def song_google(_query):
     n_query.pop(0)
     keywords = " ".join(n_query)
     urls = [url for url in search(keywords, num_results=1)]
-    return urls[0]
-
+    try:
+        print(urls[0])
+        wb.open(urls[0])
+        return _query
+    except IndexError:
+        return "Sorry, I didn't find anything on the web"
 
 if __name__ == '__main__':
     greet(name)
@@ -185,7 +192,7 @@ if __name__ == '__main__':
             pass
         # Song queries(Beta)-----------------------------------<<-x-UNDER CONSTRUCTION-x->>-----------------------------
         if 'play' in query:
-            wb.open(song_google(query))
+            song_google(query)
             handled = True
         # Other Queries-------------------------------------------------------------------------------------------------
         elif 'time' in query:
@@ -264,17 +271,21 @@ if __name__ == '__main__':
             handled = True
             quit()
 
-        if handled is False:
+        if handled is False and query != "0":
             print('Do you want to search this on google')
             speak('Do you want to search this on google')
 
-            answer = command().lower()
-            if "yes" in answer:
-                encoded_query = quote_plus(query)
-                encoded_query = "https://search.brave.com/search?q="+encoded_query
-                wb.open(encoded_query)
-
-            else:
-                print("Alright!")
-                speak("Alright!")
-
+            while True:
+                answer = command().lower()
+                if "yes" in answer:
+                    encoded_query = quote_plus(query)
+                    encoded_query = "https://search.brave.com/search?q="+encoded_query
+                    wb.open(encoded_query)
+                    break
+                elif "no" in answer:
+                    print("Alright!")
+                    speak("Alright!")
+                    break
+                else:
+                    print('Please say "yes" or "no"')
+                    speak("Please say yes or no")
