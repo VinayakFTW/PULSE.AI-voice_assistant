@@ -1,6 +1,14 @@
+## v0.1.5
+
 **1 - Bug fixes**<br>
     Fallback Google Search: *Added a fallback mechanism for unrecognized commands, asking the user if they’d like to search the query on Google.*<br>
     greet() function logic flaw: *Fixed a a flaw in the logic for greet() where the user would only be greeted during 6am - 12am*<br>
     
 **2 - Reformatted code**<br>
   *pressed a few keys here and there to make the code look a bit beautiful*
+
+## v0.1.7
+
+**1 - Bug Fixes**<br>
+    similar bug to google fall back, when no input would be understood it would ask if we wanted to search an empty string on google<br>
+    .Pretty simple fix just added a handler to tell the code if the query was handled or not.<br>
