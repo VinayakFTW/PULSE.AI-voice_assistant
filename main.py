@@ -1,14 +1,14 @@
 import datetime
 import os.path
 import webbrowser as wb
-from random import randint
 from urllib.parse import quote_plus
 import pyautogui
 import pyttsx3
 import speech_recognition as sr
 import wikipedia
 from googlesearch import search
-
+import requests
+import spotipy
 
 handled = False
 name = input('Your name: ')
@@ -19,7 +19,7 @@ if len(voices) > 1:
     engine.setProperty('voice', voices[1].id)
 else:
     engine.setProperty('voice', voices[0].id)
-engine.setProperty('rate', 145)
+engine.setProperty('rate', 175)
 
 # Functions Complimenting Engine Functioning----------------------------------------------------------------------------
 def speak(audio=None):
@@ -86,26 +86,70 @@ def command():
 
     return _query
 
+def refine_query(_query):
+    stop_words = {"tell","what",'find','search','play','is','me','open','please','for'}
+    refined_query = [word for word in _query.split() if i not in stop_words]
+    refined_query = " ".join(refined_query)
+    return refined_query
+
+
+def wikipedia_search(_query):
+    try:
+        speak("give me a moment to gather my thoughts.")
+        results = wikipedia.search(_query, 5)
+        for i, j in zip(results, [i for i in range(1, 6)]):
+            print(j, i)
+            speak(i)
+        else:
+            pass
+        q_choice = int(input('your choice:')) - 1
+        for i in results:
+            if results.index(i) == q_choice:
+                speak(i)
+                _query = i
+                break
+        else:
+            pass
+        final_result = wikipedia.summary(_query, sentences=10)
+        print(final_result)
+        speak(final_result)
+
+    except Exception as e:
+        print(e)
+        speak(f"Sorry I can't answer that currently because of {e}")
+
 
 def song_google(_query):
-    n_query = _query.split()
-    n_query.pop(0)
-    keywords = " ".join(n_query)
-    urls = [url for url in search(keywords, num_results=1)]
+    urls = [url for url in search(_query, num_results=1)]
     try:
         print(urls[0])
         wb.open(urls[0])
+
         return _query
     except IndexError:
         return "Sorry, I didn't find anything on the web"
 
+
 if __name__ == '__main__':
+
     greet(name)
     while True:
         browser_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
         wb.register('brave', None, wb.BackgroundBrowser(browser_path))
         query = command().lower()
         handled = False
+        srch_key = ['what is','search']# Search_keywords
+        for i in srch_key:
+            td_check = "time" not in query and "date" not in query
+            if i in query and td_check:
+                query = refine_query(query)
+                wikipedia_search(query)
+                handled = True
+                break
+            else:
+                continue
+        else:
+            pass
         # Browsing-------------------------------------------------------------------------------------------------------
         websites = {
             "open google": "https://www.google.com",
@@ -156,30 +200,28 @@ if __name__ == '__main__':
             "hello": "Hello! How can I assist you today?",
             "hi": "Hi there! How can I help?",
             "hey": "Hey! What’s on your mind?",
-            "how are you": "I'm here and ready to help! How about you?",
-            "what's up": "Not much, just here to assist you. What about you?",
+            "how are you": "I'm good and ready to help! How about you?",
             "good morning": "Good morning! Hope your day is off to a great start!",
             "good afternoon": "Good afternoon! How can I help?",
             "good evening": "Good evening! How can I make your night easier?",
             "thank you": "You're very welcome! Anything else I can do?",
             "thanks": "No problem at all! Let me know if there's anything more.",
-            "tell me a joke": "Why did the computer go to therapy? It had too many bytes!",
-            "what's your name": "I'm your AI assistant! What's yours?",
+            "joke": "Why did the computer go to therapy? It had too many bytes!",
+            "your name": "I'm your AI assistant! What's yours?",
             "who are you": "I'm here to help make your tasks easier!",
             "help": "Sure, I’m here to help! Just let me know what you need.",
             "what can you do": "I can answer questions, help with tasks, or just chat! What would you like?",
             "how do you work": "I use advanced algorithms to process information and provide useful responses!",
             "good": "I'm glad to hear that! Anything I can do to make it even better?",
             "bad": "I'm sorry to hear that. Is there something I can help with?",
-            "tell me something": "Did you know? Honey never spoils. They found pots of it in ancient Egyptian tombs!",
-            "i'm bored": "How about I tell you a fun fact or suggest something new?",
+            "i am bored": "How about I tell you a fun fact or suggest something new?",
             "fun fact": "Did you know? Bananas are berries, but strawberries aren't!",
-            "what's the weather": "I can check the current weather if you need! Just let me know where.",
+            #"the weather": "I can check the current weather if you need! Just let me know where.",
             "how old are you": "I'm as old as the latest update! Age is just a concept for me.",
             "i love you": "That's sweet! I'm here for you, always.",
-            "tell me a story": "Once upon a time, in the world of bits and bytes...",
-            "motivate me": "Remember, every big journey starts with a single step. You’ve got this!",
-            "what's your purpose": "I'm here to assist you in any way I can, making life easier and more fun!",
+            "story": "Once upon a time, in the world of bits and bytes...",
+            "motivate": "Remember, every big journey starts with a single step. You’ve got this!",
+            "your purpose": "I'm here to assist you in any way I can, making life easier and more fun!",
         }
 
         for i in conversational_responses:
@@ -190,51 +232,23 @@ if __name__ == '__main__':
                 break
         else:
             pass
+
         # Song queries(Beta)-----------------------------------<<-x-UNDER CONSTRUCTION-x->>-----------------------------
         if 'play' in query:
+            #os.system("start spotify")
+            query= refine_query(query)
             song_google(query)
             handled = True
+
         # Other Queries-------------------------------------------------------------------------------------------------
         elif 'time' in query:
             time()
             handled = True
+
         elif 'date' in query:
             date()
             handled = True
-        elif 'what is' in query:
-            try:
-                a = "give me a moment to gather my thoughts."
-                b = "Ooh, you’re making me think on this one... let’s see!"
-                choice = randint(0, 1)
-                if choice == 0:
-                    speak(a)
-                else:
-                    speak(b)
-                query = query.split()
-                query.pop(0)
-                query.pop(0)
-                query = " ".join(query).lower()
-                results = wikipedia.search(query, 5)
-                for i, j in zip(results, [i for i in range(1, 6)]):
-                    print(j, i)
-                    speak(i)
-                else:
-                    pass
-                q_choice = int(input('your choice:')) - 1
-                for i in results:
-                    if results.index(i) == q_choice:
-                        speak(i)
-                        query = i
-                        break
-                else:
-                    pass
-                final_result = wikipedia.summary(query, sentences=10)
-                print(final_result)
-                speak(final_result)
-                handled = True
-            except Exception as e:
-                print(e)
-                speak(f"Sorry I can't answer that currently because of {e}")
+
 
         elif 'screenshot' in query:
             screenshot()
