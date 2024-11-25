@@ -125,7 +125,7 @@ def wikipedia_search(_query):
         speak(f"Sorry I can't answer that currently because of {e}")
 
 
-def song_google(_query):
+def song_play(_query):
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
         client_id="x",  # Replace with you client_id
         client_secret="x",  # Replace with your client secret
@@ -286,7 +286,7 @@ if __name__ == '__main__':
         # Song queries(Beta)-----------------------------------<<-x-UNDER CONSTRUCTION-x->>-----------------------------
         if 'play' in query:
             query = refine_query(query)
-            song_google(query)
+            song_play(query)
             listening = False
             handled = True
 
