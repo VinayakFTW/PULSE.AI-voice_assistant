@@ -4,19 +4,19 @@ PulseAI is a voice-activated AI assistant developed in Python. It uses speech re
 
 **Features**
 
-Voice Commands: Listens to user commands, interprets them, and takes appropriate actions.
-Greeting: Customizes greetings based on the time of day.
-Website Navigation: Opens popular websites by name (e.g., Google, YouTube, Wikipedia).
-Information Retrieval: Fetches summaries from Wikipedia for "what is" queries.
-Screenshot Capture: Takes a screenshot and saves it to the user’s Pictures directory.
-Memory: Remembers information upon request and recalls it when asked.
-Conversational Responses: Provides responses for casual conversations.
-Music Search: Finds and plays songs based on Google search.
-Date and Time: Reads the current date and time upon request.
+Voice Commands: Listens to user commands, interprets them, and takes appropriate actions.<br>
+Greeting: Customizes greetings based on the time of day.<br>
+Website Navigation: Opens popular websites by name (e.g., Google, YouTube, Wikipedia).<br>
+Information Retrieval: Fetches summaries from Wikipedia for "what is" queries.<br>
+Screenshot Capture: Takes a screenshot and saves it to the user’s Pictures directory.<br>
+Memory: Remembers information upon request and recalls it when asked.<br>
+Conversational Responses: Provides responses for casual conversations.<br>
+Music Search: Finds and plays songs on spotify **NOTE:add your client id and client secret in the song_play function or else you wont be able to play the songs**.<br>
+Date and Time: Reads the current date and time upon request.<br>
 
 **Requirements**
 
-To use PulseAI, make sure you have the following Python packages installed:
+To use PulseAI, make sure you have the following Python packages installed:<br>
 pip install pyttsx3 SpeechRecognition wikipedia-api pyautogui googlesearch-python
 
 Also, PulseAI is configured to use Brave Browser for web searches. Ensure Brave is installed, or modify the path in the code to your preferred browser.
