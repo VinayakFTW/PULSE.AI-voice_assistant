@@ -12,3 +12,12 @@
 **1 - Bug Fixes**<br>
     similar bug to google fall back, when no input would be understood it would ask if we wanted to search an empty string on google<br>
     .Pretty simple fix just added a handler to tell the code if the query was handled or not.<br>
+
+## v0.2.0
+
+**1 - Reformatted code**<br>
+  *pressed a few keys here and there to make the code look a bit beautiful*
+**2 - Added play songs feature properly**<br>
+  *now you can just say "play <song_name>" to play any song you want. If you find inaccuracy try includig the name of the artist along with song name*
+**3 - Added a wake up word**<br>
+  *whenever you ask the AI to do something it will pause and let you do your work till you ask it anything again after using the wake up words "wake up" or "resume".*
