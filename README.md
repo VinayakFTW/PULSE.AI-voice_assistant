@@ -11,7 +11,7 @@ PulseAI is a voice-activated AI assistant developed in Python. It uses speech re
 - Screenshot Capture: Takes a screenshot and saves it to the user’s Pictures directory.
 - Memory: Remembers information upon request and recalls it when asked.
 - Conversational Responses: Provides responses for casual conversations.
-- Music Search: Finds and plays songs based on Google search.
+- Music Search: Finds and plays songs on spotify using the Spotify Web API.
 - Date and Time: Reads the current date and time upon request.
 
 ## Requirements

@@ -25,4 +25,9 @@
 
 ## v0.5.0
 **1 - Reformatted code**<br>
-  *pressed a few keys here and there to make the code look a bit beautiful*<br>
+  *pressed a many keys(a bit too many) here and there to make the code look a bit beautiful(and better)*<br>
+
+**2 - Updated the play_song feature**<br>
+  *Now you can play songs on spotify using your voice*<br>
+
+
