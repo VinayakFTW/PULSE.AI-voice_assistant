@@ -62,9 +62,9 @@ Also, PulseAI is configured to use Brave Browser for web searches. Ensure Brave 
     - command(): Listens for user commands.
     - greet(): Provides time-based greetings.
     - song_play(): Plays a song on spotify.
-        - wait_for_device(): A helper function to open spotify on a device if not already open.
+        - wait_for_device(): A helper function to open spotify on a device if not already open.<br>
             **IF DOWNLOADED FROM MICROSOFT STORE THEN REPLACE THE PATH WITH "start spotify"<br>if downloaded from the spotify website then simply replace with spotify.exe path on your system**
-        - play_song(): The helper function that actually plays the song after connecting to the spotify api.
+        - play_song(): The helper function that actually plays the song after connecting to the spotify api.<br>
             **REPLACE THE "client_id" AND "client_secret" WITH YOUR ID AND API FROM https://developer.spotify.com**
 
 3. Loop Execution: The main loop listens for commands and checks them against a set of conditions for executing specific tasks.
@@ -73,10 +73,10 @@ Also, PulseAI is configured to use Brave Browser for web searches. Ensure Brave 
 
 You can customize PulseAI by:
 
-- Adding more websites to the websites dictionary.
+- Adding more websites to the websites dictionary.<br>
     **THIS WILL BE REPLACED BY A MORE GENERALISED WAY TO REDUCE EFFORT AND ASSIST BETTER**
 
-- Expanding conversational_responses with additional responses.
+- Expanding conversational_responses with additional responses.<br>
     **THIS WILL BE REPLACED BY A GPT IN FUTURE UPDATES**
 
 - Adjusting the speech rate or voice type in the speak() function.
@@ -89,18 +89,6 @@ You can customize PulseAI by:
 - Incorrect Recognition: If speech recognition accuracy is low, try speaking more clearly or adjusting recog.pause_threshold in the command() function.
 
 - Missing Wikipedia Summaries: Make sure you have an internet connection for fetching data from Wikipedia.
-
-## Spotify API Usage
-
-This project utilizes the Spotify Web API to search for and play music. To use this application, you will need to generate your own API credentials from the <a href = "https://developer.spotify.com">Spotify Developer Dashboard.</a>
-
-**Data Handling and Compliance**
-
-- **No Data Ingestion**:This application does not ingest, store, cache, or copy any data returned by the Spotify API. All API calls are made in real-time to fulfill a user's direct action (e.g., searching for a song).
-
-- **User Responsibility**:As a user of this project, you are responsible for creating and managing your own Spotify API keys and adhering to the <a href = "https://developer.spotify.com/terms">Spotify Developer Terms of Service.</a>
-
-
 
 ## Spotify API Usage
 
