@@ -1,13 +1,11 @@
 import datetime
 import os.path
 import time
-import time
 import webbrowser as wb
 from urllib.parse import quote_plus
 import pyautogui
 import pyttsx3
 import speech_recognition as sr
-import spotipy
 import spotipy
 import wikipedia
 from spotipy.oauth2 import SpotifyOAuth
@@ -18,7 +16,6 @@ engine = pyttsx3.init()
 
 # Change how the Engine Sounds------------------------------------------------------------------------------------------
 """
-"""
 voices = engine.getProperty('voices')
 if len(voices) > 1:
     engine.setProperty('voice', voices[1].id)
@@ -26,26 +23,19 @@ else:
     engine.setProperty('voice', voices[0].id)
 engine.setProperty('rate', 175)
 """
-engine.setProperty('rate', 175)
-"""
 
 # Functions Complimenting Engine Functioning----------------------------------------------------------------------------
 def speak(_audio=None):
     engine.say(_audio)
-def speak(_audio=None):
-    engine.say(_audio)
     engine.runAndWait()
     return _audio
-    return _audio
 
 
-def time_tell():
 def time_tell():
     taime = datetime.datetime.now().strftime("%I:%M:%S %p")
     speak(f"It is Currently,{taime}")
 
 
-def date_tell():
 def date_tell():
     day: int = datetime.datetime.now().day
     month: int = datetime.datetime.now().month
@@ -77,17 +67,11 @@ def command():
     global listening
     _recog = sr.Recognizer()
     with sr.Microphone() as _source:
-    global listening
-    _recog = sr.Recognizer()
-    with sr.Microphone() as _source:
         print("Listening...")
-        _recog.pause_threshold = 1
-        _audio = _recog.listen(_source)
         _recog.pause_threshold = 1
         _audio = _recog.listen(_source)
     try:
         print("Recognizing...")
-        _query = _recog.recognize_google(_audio)
         _query = _recog.recognize_google(_audio)
         print(_query)
     except sr.UnknownValueError:
@@ -95,17 +79,14 @@ def command():
         print("Sorry i didn't understand that")
         handled = True
         listening = True
-        listening = True
         return "0"
     except sr.RequestError as error1:
         speak("Could not request results; {0}".format(error1))
         print("Could not request results; {0}".format(error1))
         return "0"
-        return "0"
     except Exception as error2:
         speak(error2)
         print(error2)
-        return "0"
         return "0"
 
     return _query
@@ -146,8 +127,8 @@ def wikipedia_search(_query):
 
 def song_play(_query):
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-        client_id="3a911bb776f24bb6840234f048d7af0b",  # Replace with you client_id
-        client_secret="91e024eb400e48f793c78430a7cedda2",  # Replace with your client secret
+        client_id="x",  # Replace with your client_id
+        client_secret="x",  # Replace with your client secret
         redirect_uri="http://localhost:8080",
         scope="user-modify-playback-state user-read-playback-state"
     ))
@@ -197,29 +178,13 @@ def song_play(_query):
 
 if __name__ == '__main__':
 
-
     greet(name)
-    listening = True
     listening = True
     while True:
         browser_path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
         wb.register('brave', None, wb.BackgroundBrowser(browser_path))
         query = command().lower()
         handled = False
-        srch_key = ['what is', 'search']  # Search_keywords
-
-        for i in srch_key:
-            td_check = "time" not in query and "date" not in query
-            if i in query and td_check:
-                query = refine_query(query)
-                wikipedia_search(query)
-                listening = False
-                handled = True
-                break
-            else:
-                continue
-        else:
-            pass
         srch_key = ['what is', 'search']  # Search_keywords
 
         for i in srch_key:
@@ -277,7 +242,6 @@ if __name__ == '__main__':
             if i in query:
                 wb.open(websites[i])
                 listening = False
-                listening = False
                 handled = True
                 break
         else:
@@ -288,14 +252,11 @@ if __name__ == '__main__':
             "hi": "Hi there! How can I help?",
             "hey": "Hey! What’s on your mind?",
             "how are you": "I'm good and ready to help! How about you?",
-            "how are you": "I'm good and ready to help! How about you?",
             "good morning": "Good morning! Hope your day is off to a great start!",
             "good afternoon": "Good afternoon! How can I help?",
             "good evening": "Good evening! How can I make your night easier?",
             "thank you": "You're very welcome! Anything else I can do?",
             "thanks": "No problem at all! Let me know if there's anything more.",
-            "joke": "Why did the computer go to therapy? It had too many bytes!",
-            "your name": "I'm your AI assistant! What's yours?",
             "joke": "Why did the computer go to therapy? It had too many bytes!",
             "your name": "I'm your AI assistant! What's yours?",
             "who are you": "I'm here to help make your tasks easier!",
@@ -305,15 +266,10 @@ if __name__ == '__main__':
             "good": "I'm glad to hear that! Anything I can do to make it even better?",
             "bad": "I'm sorry to hear that. Is there something I can help with?",
             "i am bored": "How about I tell you a fun fact or suggest something new?",
-            "i am bored": "How about I tell you a fun fact or suggest something new?",
             "fun fact": "Did you know? Bananas are berries, but strawberries aren't!",
-            # "the weather": "I can check the current weather if you need! Just let me know where.",
             # "the weather": "I can check the current weather if you need! Just let me know where.",
             "how old are you": "I'm as old as the latest update! Age is just a concept for me.",
             "i love you": "That's sweet! I'm here for you, always.",
-            "story": "Once upon a time, in the world of bits and bytes...",
-            "motivate": "Remember, every big journey starts with a single step. You’ve got this!",
-            "your purpose": "I'm here to assist you in any way I can, making life easier and more fun!",
             "story": "Once upon a time, in the world of bits and bytes...",
             "motivate": "Remember, every big journey starts with a single step. You’ve got this!",
             "your purpose": "I'm here to assist you in any way I can, making life easier and more fun!",
@@ -328,46 +284,33 @@ if __name__ == '__main__':
         else:
             pass
 
-
         # Song queries(Beta)-----------------------------------<<-x-UNDER CONSTRUCTION-x->>-----------------------------
         if 'play' in query:
             query = refine_query(query)
             song_play(query)
             listening = False
-            query = refine_query(query)
-            song_play(query)
-            listening = False
             handled = True
-
 
         # Other Queries-------------------------------------------------------------------------------------------------
         elif 'time' in query:
             time_tell()
             listening = False
-            time_tell()
-            listening = False
             handled = True
-
 
         elif 'date' in query:
             date_tell()
             listening = False
-            date_tell()
-            listening = False
             handled = True
-
 
 
         elif 'screenshot' in query:
             screenshot()
-            listening = False
             listening = False
             handled = True
 
         elif 'open browser' in query:
             browser_path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
             os.startfile(browser_path)
-            listening = False
             listening = False
             handled = True
 
@@ -413,9 +356,7 @@ if __name__ == '__main__':
                 if "yes" in answer:
                     encoded_query = quote_plus(query)
                     encoded_query = "https://search.brave.com/search?q=" + encoded_query
-                    encoded_query = "https://search.brave.com/search?q=" + encoded_query
                     wb.open(encoded_query)
-                    listening = False
                     listening = False
                     break
                 elif "no" in answer:
@@ -425,25 +366,6 @@ if __name__ == '__main__':
                 else:
                     print('Please say "yes" or "no"')
                     speak("Please say yes or no")
-
-        if listening is False:
-            print("Waiting for 'wake up' or 'resume'...")
-
-            with sr.Microphone() as source:
-                recog = sr.Recognizer()
-                while True:
-                    try:
-                        audio = recog.listen(source, timeout=5)
-                        wake_up_command = recog.recognize_google(audio).lower()
-
-                        if "wake up" in wake_up_command or "resume" in wake_up_command:
-                            print("I'm back! How can I assist you?")
-                            speak("I'm back! How can I assist you?")
-                            listening = True
-                            break
-
-                    except:
-                        continue
 
         if listening is False:
             print("Waiting for 'wake up' or 'resume'...")

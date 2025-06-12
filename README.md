@@ -4,15 +4,15 @@ PulseAI is a voice-activated AI assistant developed in Python. It uses speech re
 
 ## Features
 
-Voice Commands: Listens to user commands, interprets them, and takes appropriate actions.
-Greeting: Customizes greetings based on the time of day.
-Website Navigation: Opens popular websites by name (e.g., Google, YouTube, Wikipedia).
-Information Retrieval: Fetches summaries from Wikipedia for "what is" queries.
-Screenshot Capture: Takes a screenshot and saves it to the user’s Pictures directory.
-Memory: Remembers information upon request and recalls it when asked.
-Conversational Responses: Provides responses for casual conversations.
-Music Search: Finds and plays songs based on Google search.
-Date and Time: Reads the current date and time upon request.
+- Voice Commands: Listens to user commands, interprets them, and takes appropriate actions.
+- Greeting: Customizes greetings based on the time of day.
+- Website Navigation: Opens popular websites by name (e.g., Google, YouTube, Wikipedia).
+- Information Retrieval: Fetches summaries from Wikipedia for "what is" queries.
+- Screenshot Capture: Takes a screenshot and saves it to the user’s Pictures directory.
+- Memory: Remembers information upon request and recalls it when asked.
+- Conversational Responses: Provides responses for casual conversations.
+- Music Search: Finds and plays songs based on Google search.
+- Date and Time: Reads the current date and time upon request.
 
 ## Requirements
 
