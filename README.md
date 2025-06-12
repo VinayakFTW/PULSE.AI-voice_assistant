@@ -102,3 +102,12 @@ This project utilizes the Spotify Web API to search for and play music. To use t
 
 
 
+## Spotify API Usage
+
+This project utilizes the Spotify Web API to search for and play music. To use this application, you will need to generate your own API credentials from the <a href = "https://developer.spotify.com">Spotify Developer Dashboard.</a>
+
+**Data Handling and Compliance**
+
+- **No Data Ingestion**:This application does not ingest, store, cache, or copy any data returned by the Spotify API. All API calls are made in real-time to fulfill a user's direct action (e.g., searching for a song).
+
+- **User Responsibility**:As a user of this project, you are responsible for creating and managing your own Spotify API keys and adhering to the <a href = "https://developer.spotify.com/terms">Spotify Developer Terms of Service.</a>
