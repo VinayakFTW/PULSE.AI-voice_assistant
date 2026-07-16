@@ -2,13 +2,23 @@ from backend.pulse_config.prompts import tool_system_prompt
 from backend.pulse_brain.llm_interface import tool_dispatcher,load_model,generate_response
 from backend.pulse_brain.memory import load_history, save_history
 from backend.pulse_models.request_model import UserRequest
+from backend.pulse_middlewares.dependencies import validate_user
+from backend.pulse_controllers.openwa_controllers.fetch_chat_history import get_wa_chat_message
+from backend.pulse_controllers.openwa_controllers.get_wa_session import get_wa_session_id
 
 from fastapi import HTTPException
 
 async def process_chat(request: UserRequest):
+    user = validate_user(request)
+    if user is False:
+        raise HTTPException(status_code=403, detail="User is not verified.")
     try:
         client = load_model()
-        conversation_history = load_history()
+        conversation_history = None
+        if request.channel == "whatsapp":
+            conversation_history = get_wa_chat_message(session_id=get_wa_session_id(), chat_id=request.user_id, complete=True)
+        else:
+            conversation_history = load_history()
         listening = True
         if listening:
             query = request.query

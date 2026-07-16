@@ -8,7 +8,7 @@ load_dotenv()
 
 def validate_user(req: UserRequest):
     """
-    Dependency to check if the user exists before processing the chat.
+    Dependency to check if the user is verified before processing the chat.
     """
     if os.getenv("MODE") == "development":
         # In development mode, use random number configure in your .env
@@ -18,5 +18,7 @@ def validate_user(req: UserRequest):
     
     if not user:
         user = create_user(req.phone_number)
-
+    elif not bool(user.verified):
+        return False
+    
     return user
