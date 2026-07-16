@@ -2,5 +2,5 @@ from pydantic import BaseModel
 
 class UserRequest(BaseModel):
     query: str
-    user_id: str = "default_user"
+    user_id: str
     channel: str = "default_channel"

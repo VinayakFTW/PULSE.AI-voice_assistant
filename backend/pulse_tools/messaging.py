@@ -1,9 +1,14 @@
 import os
+import httpx
 import vobject
-import pywhatkit
 from rapidfuzz import process, fuzz
 
 from pulse_ear.speech_handler import speak
+from backend.pulse_controllers.openwa_controllers.get_wa_session import get_wa_session_id
+from backend.pulse_controllers.openwa_controllers.get_wa_session_chats import get_wa_session_chats
+
+OPENWA_URL = os.getenv("OPENWA_URL")
+OPENWA_API_KEY = os.getenv("OPENWA_API_KEY")
 
 def get_vcf_contacts(file_path):
     """
@@ -61,7 +66,29 @@ def send_whatsapp_message(contact_name, message):
     if contact and contact['phone']:
         full_message = f"{message}\n**Sent by Pulse AI**"
         try:
-            pywhatkit.sendwhatmsg_instantly(contact['phone'], full_message)
+            session_id = get_wa_session_id()
+            session_chats = get_wa_session_chats(session_id=session_id)
+            chat_id = None
+            for _ in session_chats:
+                if session_chats['contact'] == contact['phone']:
+                    chat_id = session_chats['chat_id']
+                    break
+            url = f"{OPENWA_URL}/api/sessions/{session_id}/messages/send-text"
+            payload = {
+                "chatId": chat_id,
+                "text": full_message, 
+            }
+            
+            headers = {
+                "X-API-Key": OPENWA_API_KEY,
+            }
+            try:
+                request = httpx.post(url, json=payload, headers=headers)
+                request.raise_for_status()
+            except httpx.HTTPError as e:
+                print(f"Error sending WhatsApp message: {e}")
+                speak("Sorry, I couldn't send the message.")
+                return False
             speak("Message sent successfully!")
             return True
         except Exception as e:

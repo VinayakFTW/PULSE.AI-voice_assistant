@@ -17,7 +17,7 @@ def get_wa_session_chats(session_id=None):
             result = []
             for obj in response.json():
                 if not obj.get("isGroup"):
-                    result.append({"chat_name": obj.get("name")})
+                    result.append({"chat_name": obj.get("name"), "chat_id": obj.get("id"), "contact": obj.get("contact")})
             return result
         else:
             return None
